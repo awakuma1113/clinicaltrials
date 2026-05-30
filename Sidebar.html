@@ -1,0 +1,1946 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>がん対策図鑑 臨床試験抽出</title>
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* CSS Variables & Theme System */
+    :root {
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --primary-light: #e0e7ff;
+      --secondary: #0d9488;
+      --secondary-hover: #0f766e;
+      --secondary-light: #ccfbf1;
+      --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      --panel-bg: rgba(255, 255, 255, 0.8);
+      --panel-border: rgba(255, 255, 255, 0.6);
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-white: #ffffff;
+      --border-color: #cbd5e1;
+      --success: #10b981;
+      --error: #ef4444;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --radius: 12px;
+      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Reset and Base Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      font-size: 14px;
+      line-height: 1.5;
+      padding: 16px;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+    }
+
+    /* Container & Layout */
+    .app-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+    }
+
+    /* Glassmorphism Cards */
+    .card {
+      background: var(--panel-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--panel-border);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow-md);
+      transition: var(--transition);
+    }
+
+    .card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-2px);
+    }
+
+    /* Header Styling */
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--primary-light);
+    }
+
+    .header-logo {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-white);
+      box-shadow: 0 0 10px rgba(79, 70, 229, 0.4);
+    }
+
+    .header h1 {
+      font-size: 17px;
+      color: var(--primary);
+      letter-spacing: -0.02em;
+    }
+
+    .header p {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 1px;
+    }
+
+    /* Form Fields */
+    .form-group {
+      margin-bottom: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .form-group label {
+      font-weight: 600;
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-wrapper svg {
+      position: absolute;
+      left: 12px;
+      color: var(--text-muted);
+      width: 16px;
+      height: 16px;
+      pointer-events: none;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      background-color: rgba(255, 255, 255, 0.9);
+      color: var(--text-main);
+      font-size: 13px;
+      font-family: inherit;
+      transition: var(--transition);
+      outline: none;
+    }
+
+    .form-control:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.25);
+      background-color: #ffffff;
+    }
+
+    .form-control-with-icon {
+      padding-left: 36px;
+    }
+
+    textarea.form-control {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 16px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 13.5px;
+      cursor: pointer;
+      transition: var(--transition);
+      width: 100%;
+      user-select: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary) 0%, #6366f1 100%);
+      color: var(--text-white);
+      box-shadow: 0 4px 6px rgba(79, 70, 229, 0.25);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, var(--primary-hover) 0%, #4f46e5 100%);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 12px rgba(79, 70, 229, 0.35);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-secondary {
+      background: linear-gradient(135deg, var(--secondary) 0%, #14b8a6 100%);
+      color: var(--text-white);
+      box-shadow: 0 4px 6px rgba(13, 148, 136, 0.25);
+    }
+
+    .btn-secondary:hover {
+      background: linear-gradient(135deg, var(--secondary-hover) 0%, #0d9488 100%);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 12px rgba(13, 148, 136, 0.35);
+    }
+
+    .btn:disabled {
+      background: #e2e8f0 !important;
+      color: #94a3b8 !important;
+      box-shadow: none !important;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    /* Collapsible Preview Sections */
+    .section-header {
+      background: rgba(241, 245, 249, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-top: 10px;
+      transition: var(--transition);
+      user-select: none;
+    }
+
+    .section-header:hover {
+      background: rgba(241, 245, 249, 0.9);
+      color: var(--primary);
+    }
+
+    .section-content {
+      padding: 12px 6px 4px 6px;
+      display: none;
+      flex-direction: column;
+    }
+
+    .section-content.active {
+      display: flex;
+    }
+
+    .chevron-icon {
+      width: 16px;
+      height: 16px;
+      transition: transform 0.3s ease;
+    }
+
+    .section-header.active .chevron-icon {
+      transform: rotate(180deg);
+    }
+
+    /* Loading Overlay */
+    .loader-container {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 10px;
+      gap: 16px;
+    }
+
+    .spinner {
+      width: 44px;
+      height: 44px;
+      border: 4px solid var(--primary-light);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      box-shadow: 0 0 10px rgba(79, 70, 229, 0.15);
+    }
+
+    .loader-text {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      color: var(--primary);
+      animation: pulse 1.5s infinite ease-in-out;
+      text-align: center;
+    }
+
+    /* Alerts and Toasts */
+    .alert {
+      padding: 12px 14px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      display: none;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13px;
+      animation: slideDown 0.3s ease-out;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .alert-success {
+      background-color: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      color: #065f46;
+    }
+
+    .alert-error {
+      background-color: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #991b1b;
+    }
+
+    .alert-icon {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* Animation Definitions */
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+
+    @keyframes slideDown {
+      from { transform: translateY(-10px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Quick Action Chips */
+    .quick-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 2px;
+    }
+
+    .chip {
+      background-color: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: var(--transition);
+    }
+
+    .chip:hover {
+      background-color: var(--primary-light);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    /* Preview Wrapper */
+    #preview-container {
+      display: none;
+      animation: slideDown 0.4s ease-out;
+    }
+
+    .preview-header-meta {
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--secondary);
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+
+    /* Candidates Card Styles */
+    .candidate-card {
+      background: var(--panel-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--panel-border);
+      border-radius: var(--radius);
+      margin-bottom: 12px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+    .candidate-card:hover {
+      box-shadow: var(--shadow-md);
+      border-color: rgba(79, 70, 229, 0.3);
+    }
+    .candidate-card-header {
+      padding: 10px 14px;
+      background: rgba(241, 245, 249, 0.5);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+      user-select: none;
+    }
+    .candidate-endpoint-badge {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      font-size: 11.5px;
+      background: var(--primary-light);
+      color: var(--primary);
+      padding: 2px 7px;
+      border-radius: 6px;
+    }
+    .confidence-badge {
+      font-size: 10.5px;
+      font-weight: 600;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+    .confidence-high {
+      background-color: #d1fae5;
+      color: #065f46;
+    }
+    .confidence-medium {
+      background-color: #fef3c7;
+      color: #92400e;
+    }
+    .confidence-low {
+      background-color: #fee2e2;
+      color: #991b1b;
+    }
+    .source-text-block {
+      padding: 10px 12px;
+      background: rgba(241, 245, 249, 0.3);
+      border-left: 3.5px solid var(--primary);
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.45;
+      margin: 10px 10px 6px 10px;
+      border-radius: 4px;
+      word-break: break-all;
+    }
+    .candidate-form {
+      padding: 6px 12px 12px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      border-top: 1px solid rgba(226, 232, 240, 0.4);
+    }
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .form-grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 6px;
+    }
+    .compact-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 3px;
+      display: block;
+    }
+    .compact-control {
+      width: 100%;
+      padding: 7px 9px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-size: 12px;
+      outline: none;
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--text-main);
+      font-family: inherit;
+      transition: var(--transition);
+    }
+    .compact-control:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.15);
+      background-color: #ffffff;
+    /* Tabs System */
+    .tabs-container {
+      display: flex;
+      background: rgba(15, 23, 42, 0.05);
+      padding: 4px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      border: 1px solid var(--border-color);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 8px 6px;
+      font-size: 11.5px;
+      border: none;
+      border-radius: 7px;
+      background: transparent;
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--text-muted);
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+    .tab-btn:hover {
+      color: var(--primary);
+    }
+    .tab-btn.active {
+      background: #ffffff !important;
+      color: var(--primary) !important;
+      box-shadow: var(--shadow-sm);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- Title / Brand Card -->
+    <div class="card" style="padding: 14px 18px;">
+      <div class="header">
+        <div class="header-logo">
+          <svg fill="currentColor" viewBox="0 0 24 24" width="20" height="20">
+            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
+          </svg>
+        </div>
+        <div>
+          <h1>がん対策図鑑 臨床試験抽出</h1>
+          <p>Clinical Trial Extract & Sheets Sync</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Alert Panel -->
+    <div id="alert-panel" class="alert">
+      <!-- Injected via JavaScript -->
+    </div>
+
+    <!-- Tabs Navigation -->
+    <div class="tabs-container">
+      <button type="button" class="tab-btn active" id="tab-btn-gantaisaku" onclick="switchTab('gantaisaku')">
+        <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" width="13" height="13">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/>
+        </svg>
+        図鑑から抽出
+      </button>
+      <button type="button" class="tab-btn" id="tab-btn-pubmed" onclick="switchTab('pubmed')">
+        <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" width="13" height="13">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/>
+        </svg>
+        PubMed補完
+      </button>
+      <button type="button" class="tab-btn" id="tab-btn-nct" onclick="switchTab('nct')">
+        <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" width="13" height="13">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.375M9 18h3.375m1.5-13.5h3.75m-3.75 3h3.75m-3.75 3h3.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z"/>
+        </svg>
+        NCTから補完
+      </button>
+    </div>
+
+    <!-- Tab Content 1: Gantaisaku -->
+    <div class="card tab-content" id="content-gantaisaku" style="display: block;">
+      <div class="form-group" style="margin-bottom: 12px;">
+        <label for="article-url">がん対策図鑑 記事URL</label>
+        <div class="input-wrapper">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+          </svg>
+          <input type="url" id="article-url" class="form-control form-control-with-icon" placeholder="https://gantaisaku.net/trial/..." value="">
+        </div>
+      </div>
+      <button class="btn btn-primary" id="btn-analyze" onclick="startAnalysis()">
+        <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" width="16" height="16">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        </svg>
+        解析開始
+      </button>
+    </div>
+
+    <!-- Tab Content 2: PubMed -->
+    <div class="card tab-content" id="content-pubmed" style="display: none;">
+      <div class="form-group" style="margin-bottom: 12px;">
+        <label for="pubmed-input">PubMed ID (PMID)</label>
+        <div class="input-wrapper">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/>
+          </svg>
+          <input type="text" id="pubmed-input" class="form-control form-control-with-icon" placeholder="例: 29658856" value="">
+        </div>
+      </div>
+      <button class="btn btn-primary" id="btn-pubmed-execute" onclick="executePubMedOnly()">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="16" height="16">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/>
+        </svg>
+        PubMedから補完を実行
+      </button>
+    </div>
+
+    <!-- Tab Content 3: ClinicalTrials -->
+    <div class="card tab-content" id="content-nct" style="display: none;">
+      <div class="form-group" style="margin-bottom: 12px;">
+        <label for="nct-input">NCT番号 (NCT ID)</label>
+        <div class="input-wrapper">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.375M9 18h3.375m1.5-13.5h3.75m-3.75 3h3.75m-3.75 3h3.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z"/>
+          </svg>
+          <input type="text" id="nct-input" class="form-control form-control-with-icon" placeholder="例: NCT03974022" value="" oninput="checkActiveRowOrInputNct()">
+        </div>
+        <p id="nct-status-label" style="font-size: 11px; color: #b45309; font-weight: 600; padding: 6px 8px; background: rgba(254, 243, 199, 0.4); border-radius: 6px; border-left: 3px solid #f59e0b; margin-top: 8px; margin-bottom: 0; display: none; line-height: 1.45;"></p>
+      </div>
+      <button class="btn btn-primary" id="btn-nct-execute" onclick="executeNctOnly()">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="16" height="16">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.375M9 18h3.375m1.5-13.5h3.75m-3.75 3h3.75m-3.75 3h3.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z"/>
+        </svg>
+        NCTから補完
+      </button>
+    </div>
+
+    <!-- Loading Animation Panel -->
+    <div class="card loader-container" id="loader-panel">
+      <div class="spinner"></div>
+      <div class="loader-text">記事HTMLを取得・解析中...</div>
+    </div>
+
+    <!-- Preview & Edit Panel -->
+    <div id="preview-container">
+      
+      <!-- Extraction Action Card (New in V3.1) -->
+      <div class="card" id="extraction-action-card" style="margin-bottom: 16px;">
+        <div class="preview-header-meta">Primary Source Complement</div>
+        <h3 style="font-size: 15px; color: var(--primary); margin-bottom: 8px;">臨床試験結果の補完</h3>
+        <p style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.45;">
+          がん対策図鑑上の主要な数値は画像化されているため、PubMedの抄録やClinicalTrials.govの試験詳細から一次情報を取得し、結果数値を補完します。
+        </p>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <button class="btn btn-secondary" id="btn-supplement-pubmed" onclick="startSupplement('pubmed')" style="font-size: 13px; padding: 10px 14px;">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="16" height="16">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/>
+            </svg>
+            PubMedから補完 (PMID: <span id="label-pmid">-</span>)
+          </button>
+          <button class="btn btn-secondary" id="btn-supplement-ct" onclick="startSupplement('clinicaltrials')" style="font-size: 13px; padding: 10px 14px;">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="16" height="16">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.375M9 18h3.375m1.5-13.5h3.75m-3.75 3h3.75m-3.75 3h3.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z"/>
+            </svg>
+            ClinicalTrials.govから補完 (NCT: <span id="label-nct">-</span>)
+          </button>
+        </div>
+      </div>
+
+      <!-- Results Candidates Container (New in V3.0) -->
+      <div id="results-candidates-container" style="display: none; margin-bottom: 16px;"></div>
+
+      <!-- Article Metadata Card -->
+      <div class="card" style="margin-bottom: 16px;">
+        <!-- Status Warning Card (New in V3.2: Requirement 10) -->
+        <div id="status-warning-card" style="margin-bottom: 14px; background-color: rgba(254, 243, 199, 0.5); border: 1.5px solid rgba(251, 191, 36, 0.4); border-radius: var(--radius); padding: 12px; display: block;">
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+            <svg fill="currentColor" viewBox="0 0 20 20" width="18" height="18" style="color: #d97706;">
+              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+            </svg>
+            <span style="font-weight: 700; color: #92400e; font-size: 13px; font-family: 'Outfit', sans-serif;">解析ステータス</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px; font-size: 12px; color: #78350f; line-height: 1.45;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="confidence-badge" style="background-color: #d1fae5; color: #065f46; font-size: 9.5px; padding: 2px 6px; font-weight: 700; border-radius: 4px;">取得完了</span>
+              <strong style="color: #1e293b;">基本情報</strong>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="confidence-badge" style="background-color: #fee2e2; color: #991b1b; font-size: 9.5px; padding: 2px 6px; font-weight: 700; border-radius: 4px;">未取得</span>
+              <strong style="color: #1e293b;">結果数値データ (PFS/OS/HR等)</strong>
+            </div>
+            <p style="margin-top: 4px; font-size: 11px; color: #b45309; font-weight: 500; padding: 6px 8px; background: rgba(255,255,255,0.6); border-radius: 6px; border-left: 3px solid #f59e0b; margin-bottom: 0;">
+              💡 <strong>お知らせ:</strong> 結果表が<strong>画像</strong>であるため、HTML本文からは数値が未取得です。下記の推奨補完アクション、または手入力をご使用ください。
+            </p>
+            <button type="button" class="btn btn-secondary" onclick="focusManualEntry()" style="font-size: 11px; padding: 6px 10px; margin-top: 4px; width: 100%; border: 1px solid rgba(217, 119, 6, 0.4); background: rgba(254, 243, 199, 0.9); color: #92400e; box-shadow: none; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 4px;">
+              ✏️ 手入力で結果を記入する
+            </button>
+          </div>
+        </div>
+
+        <div class="preview-header-meta">Extraction Result Preview</div>
+        <h3 style="font-size: 15px; color: var(--text-main); margin-bottom: 14px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">抽出結果プレビュー</h3>
+        
+        <form id="extraction-form">
+          <!-- Accordion 1: 基本情報 (Basic Info) -->
+          <div class="section-header active" onclick="toggleSection('sec-basic')">
+            <span>1. 基本情報</span>
+            <svg class="chevron-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </div>
+          <div class="section-content active" id="sec-basic">
+            <div class="form-group">
+              <label for="field-title">記事タイトル</label>
+              <textarea id="field-title" class="form-control" rows="2"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="field-url">記事URL</label>
+              <input type="url" id="field-url" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="field-pub-date">発表日 (Publication Date)</label>
+              <input type="text" id="field-pub-date" class="form-control" placeholder="例: 2018/10/25">
+            </div>
+            <div class="form-group">
+              <label for="field-cancer-type">がん種またはカテゴリ</label>
+              <input type="text" id="field-cancer-type" class="form-control">
+              <div class="quick-tags">
+                <span class="chip" onclick="setField('field-cancer-type', '肺がん')">肺がん</span>
+                <span class="chip" onclick="setField('field-cancer-type', '乳がん')">乳がん</span>
+                <span class="chip" onclick="setField('field-cancer-type', '胃がん')">胃がん</span>
+                <span class="chip" onclick="setField('field-cancer-type', '大腸がん')">大腸がん</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="field-setting">治療ライン</label>
+              <input type="text" id="field-setting" class="form-control">
+              <div class="quick-tags">
+                <span class="chip" onclick="setField('field-setting', '1次治療')">1次治療</span>
+                <span class="chip" onclick="setField('field-setting', '2次治療')">2次治療</span>
+                <span class="chip" onclick="setField('field-setting', '術後補助')">術後補助</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Accordion 2: 臨床試験詳細 (Trial details) -->
+          <div class="section-header" onclick="toggleSection('sec-trial')">
+            <span>2. 臨床試験詳細</span>
+            <svg class="chevron-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </div>
+          <div class="section-content" id="sec-trial">
+            <div class="form-group">
+              <label for="field-trial-name">試験名</label>
+              <input type="text" id="field-trial-name" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="field-phase">Phase (試験相)</label>
+              <input type="text" id="field-phase" class="form-control">
+              <div class="quick-tags">
+                <span class="chip" onclick="setField('field-phase', 'Phase 3')">Phase 3</span>
+                <span class="chip" onclick="setField('field-phase', 'Phase 2')">Phase 2</span>
+                <span class="chip" onclick="setField('field-phase', 'Phase 1/2')">Phase 1/2</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="field-nct">NCT番号 (ClinicalTrials.gov)</label>
+              <input type="text" id="field-nct" class="form-control" placeholder="NCT12345678">
+            </div>
+            <div class="form-group">
+              <label for="field-country">試験実施国</label>
+              <input type="text" id="field-country" class="form-control">
+              <div class="quick-tags">
+                <span class="chip" onclick="setField('field-country', '国際共同')">国際共同</span>
+                <span class="chip" onclick="setField('field-country', '日本')">日本</span>
+                <span class="chip" onclick="setField('field-country', '米国')">米国</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="field-endpoint">主要評価項目</label>
+              <input type="text" id="field-endpoint" class="form-control" placeholder="例: PFS, OS">
+            </div>
+            <div class="form-group">
+              <label for="field-endpoint-from-title">主要評価項目 (タイトル抽出)</label>
+              <input type="text" id="field-endpoint-from-title" class="form-control" placeholder="例: PFS, OS">
+            </div>
+          </div>
+
+          <!-- Accordion 3: 文献 & その他 (Publication & Notes) -->
+          <div class="section-header" onclick="toggleSection('sec-lit')">
+            <span>3. 研究文献 & その他</span>
+            <svg class="chevron-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </div>
+          <div class="section-content" id="sec-lit">
+            <div class="form-group">
+              <label for="field-publication">原著論文情報 (ジャーナル等)</label>
+              <input type="text" id="field-publication" class="form-control" placeholder="例: NEJM 2018">
+            </div>
+            <div class="form-group">
+              <label for="field-orig-url">原著論文URL</label>
+              <input type="url" id="field-orig-url" class="form-control" placeholder="https://doi.org/...">
+            </div>
+            <div class="form-group">
+              <label for="field-pubmed-id">PubMed ID (PMID)</label>
+              <input type="text" id="field-pubmed-id" class="form-control" placeholder="例: 29658856">
+            </div>
+            <div class="form-group">
+              <label for="field-notes">備考</label>
+              <input type="text" id="field-notes" class="form-control">
+            </div>
+          </div>
+
+          <!-- Accordion 4: 定性的要約 (Summary) -->
+          <div class="section-header" onclick="toggleSection('sec-summary')">
+            <span>4. 定性的要約</span>
+            <svg class="chevron-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </div>
+          <div class="section-content" id="sec-summary">
+            <div class="form-group" style="margin-bottom: 4px;">
+              <label for="field-summary">定性的要約 (自動生成)</label>
+              <textarea id="field-summary" class="form-control" rows="4"></textarea>
+            </div>
+          </div>
+        </form>
+
+        <button class="btn btn-secondary" id="btn-save" onclick="saveToSheet()" style="margin-top: 18px;">
+          <svg fill="currentColor" viewBox="0 0 24 24" width="16" height="16">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.25z" style="display:none;"/>
+            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+          </svg>
+          Google Sheetsに登録
+        </button>
+      </div>
+    </div>
+
+    <!-- GitHub Integration Card -->
+    <div class="card" id="github-card" style="margin-top: 4px;">
+      <div class="preview-header-meta" style="color: var(--primary);">Data Synchronization</div>
+      <h3 style="font-size: 15px; color: var(--text-main); margin-bottom: 6px; display: flex; align-items: center; gap: 8px;">
+        <svg fill="currentColor" viewBox="0 0 24 24" width="18" height="18" style="color: var(--primary);">
+          <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+        </svg>
+        GitHub同期
+        <span id="github-conn-status" class="confidence-badge" style="background-color: #e2e8f0; color: #475569; font-size: 9.5px; padding: 1px 5px; margin-left: auto;">未接続</span>
+      </h3>
+      <p style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.45;">
+        スプレッドシートのデータをCSV形式でGitHubリポジトリへ直接反映（コミット・プッシュ）します。
+      </p>
+
+      <!-- Sync Actions Panel -->
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <button class="btn btn-primary" id="btn-github-sync" onclick="syncDataToGitHub()">
+          <svg fill="currentColor" viewBox="0 0 20 20" width="16" height="16">
+            <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 110 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd"/>
+          </svg>
+          GitHubへデータを同期する
+        </button>
+      </div>
+
+      <!-- Settings Collapsible Panel -->
+      <div class="section-header" id="github-settings-header" onclick="toggleSection('github-settings-content')" style="margin-top: 10px; padding: 8px 10px; font-size: 12px; background: rgba(241,245,249,0.4);">
+        <span>⚙️ GitHub連携設定</span>
+        <svg class="chevron-icon" id="github-settings-chevron" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="12" height="12">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+        </svg>
+      </div>
+      <div class="section-content" id="github-settings-content" style="gap: 10px; padding-top: 8px;">
+        <div class="form-group" style="margin-bottom: 8px;">
+          <label style="font-size: 11px;">Personal Access Token (PAT)</label>
+          <div style="position: relative; display: flex; align-items: center;">
+            <input type="password" id="gh-token" class="form-control" placeholder="ghp_********************" style="font-size: 12px; padding-right: 32px;">
+            <span onclick="togglePatVisibility()" style="position: absolute; right: 10px; cursor: pointer; color: var(--text-muted); font-size: 12px; user-select: none;" id="gh-token-toggle">👁️</span>
+          </div>
+          <span style="font-size: 9.5px; color: var(--text-muted);">
+            ※ トークンはGoogleアカウントの個人領域に安全に保存されます。
+          </span>
+        </div>
+        
+        <div class="form-group" style="margin-bottom: 8px;">
+          <label style="font-size: 11px;">リポジトリ (owner/repo)</label>
+          <input type="text" id="gh-repo" class="form-control" value="awakuma1113/clinicaltrials" style="font-size: 12px;">
+        </div>
+
+        <div class="form-group" style="margin-bottom: 10px;">
+          <label style="font-size: 11px;">対象ブランチ</label>
+          <input type="text" id="gh-branch" class="form-control" value="main" style="font-size: 12px;">
+        </div>
+
+        <!-- Settings Buttons -->
+        <div style="display: flex; gap: 6px;">
+          <button class="btn btn-secondary" id="btn-gh-test" onclick="testGitHubSync()" style="font-size: 11.5px; padding: 7px 10px; flex: 1; background: linear-gradient(135deg, #64748b 0%, #475569 100%); box-shadow: none;">
+            接続テスト
+          </button>
+          <button class="btn btn-primary" id="btn-gh-save" onclick="saveGitHubSettings()" style="font-size: 11.5px; padding: 7px 10px; flex: 1;">
+            設定を保存
+          </button>
+        </div>
+      </div>
+
+      <!-- Sync Log / Details -->
+      <div id="github-log-panel" style="display: none; margin-top: 10px; padding: 10px; background: rgba(15,23,42,0.03); border-radius: 8px; border: 1px dashed var(--border-color); font-size: 11.5px; line-height: 1.45;">
+        <!-- Injected via JavaScript -->
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // ==========================================
+    // タブナビゲーション & モード切り替え (Tabs & Modes V4.0)
+    // ==========================================
+    function switchTab(tabId) {
+      // 全タブボタンのアクティブクラスを除去
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      // 全タブコンテンツを非表示
+      document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+      
+      // 対象タブの有効化
+      if (tabId === 'gantaisaku') {
+        document.getElementById('tab-btn-gantaisaku').classList.add('active');
+        document.getElementById('content-gantaisaku').style.display = 'block';
+      } else if (tabId === 'pubmed') {
+        document.getElementById('tab-btn-pubmed').classList.add('active');
+        document.getElementById('content-pubmed').style.display = 'block';
+        // 解析済みメタデータがあれば自動セット
+        if (currentExtractedData && currentExtractedData.pubmed_id) {
+          document.getElementById('pubmed-input').value = currentExtractedData.pubmed_id;
+        }
+      } else if (tabId === 'nct') {
+        document.getElementById('tab-btn-nct').classList.add('active');
+        document.getElementById('content-nct').style.display = 'block';
+        // シート選択または現在値からNCTチェック
+        checkActiveRowOrInputNct();
+      }
+    }
+
+    function checkActiveRowOrInputNct() {
+      const nctInput = document.getElementById('nct-input').value.trim();
+      const statusLabel = document.getElementById('nct-status-label');
+      
+      if (nctInput && nctInput.toUpperCase().startsWith('NCT')) {
+        statusLabel.innerText = `💡 ${nctInput.toUpperCase()} からClinicalTrials.gov情報を取得できます`;
+        statusLabel.style.display = 'block';
+        return;
+      }
+      
+      google.script.run
+        .withSuccessHandler((res) => {
+          if (res && res.nctId) {
+            statusLabel.innerText = `💡 ${res.nctId} (シート選択行) からClinicalTrials.gov情報を取得できます`;
+            statusLabel.style.display = 'block';
+            document.getElementById('nct-input').value = res.nctId;
+          } else {
+            statusLabel.style.display = 'none';
+          }
+        })
+        .withFailureHandler(() => {
+          statusLabel.style.display = 'none';
+        })
+        .getNctIdFromSheetSelectionOnly();
+    }
+
+    function executeNctOnly() {
+      const nctVal = document.getElementById('nct-input').value.trim();
+      
+      document.getElementById('content-nct').style.display = 'none';
+      document.getElementById('loader-panel').style.display = 'flex';
+      document.getElementById('loader-panel').querySelector('.loader-text').innerText = 'ClinicalTrials.gov APIからデータ取得中...';
+      document.getElementById('preview-container').style.display = 'none';
+      hideAlert();
+      
+      google.script.run
+        .withSuccessHandler((res) => {
+          document.getElementById('loader-panel').style.display = 'none';
+          document.getElementById('content-nct').style.display = 'block';
+          
+          if (!res) {
+            showAlert('ClinicalTrials.govからの取得結果が空です。', 'error');
+            return;
+          }
+          
+          // Populate preview data with NCT basic info
+          currentExtractedData = {
+            nct_id: res.nct_id,
+            trial_name: res.trial_name,
+            article_title: res.trial_name,
+            article_url: 'https://clinicaltrials.gov/study/' + res.nct_id,
+            notes: 'ClinicalTrials.gov補完より取得'
+          };
+          
+          currentExtractedCandidates = res.candidates;
+          renderCandidates(res.candidates);
+          
+          // Update preview fields
+          document.getElementById('field-title').value = res.trial_name || '';
+          document.getElementById('field-url').value = '';
+          document.getElementById('field-nct').value = res.nct_id || '';
+          document.getElementById('field-trial-name').value = res.trial_name || '';
+          
+          // Open preview
+          document.getElementById('preview-container').style.display = 'block';
+          showAlert(`ClinicalTrials.govから「${res.nct_id}」の取得が完了しました！結果・メタデータをTrials / Arms / Outcomes / Results_rawシートに保存しました。確認用の候補がカードとして下に表示されています。`, 'success');
+        })
+        .withFailureHandler((err) => {
+          document.getElementById('loader-panel').style.display = 'none';
+          document.getElementById('content-nct').style.display = 'block';
+          showAlert('ClinicalTrials.gov取得エラー: ' + err.message, 'error');
+        })
+        .supplementFromClinicalTrialsApi(nctVal);
+    }
+
+    function executePubMedOnly() {
+      const pmidVal = document.getElementById('pubmed-input').value.trim();
+      if (!pmidVal) {
+        showAlert('PubMed IDを入力してください。', 'error');
+        return;
+      }
+      
+      document.getElementById('content-pubmed').style.display = 'none';
+      document.getElementById('loader-panel').style.display = 'flex';
+      document.getElementById('loader-panel').querySelector('.loader-text').innerText = 'PubMedからデータ補完中...';
+      document.getElementById('preview-container').style.display = 'none';
+      hideAlert();
+      
+      const payload = {
+        pubmed_id: pmidVal,
+        article_url: '',
+        trial_name: currentExtractedData ? (currentExtractedData.trial_name || '') : ''
+      };
+      
+      google.script.run
+        .withSuccessHandler((candidates) => {
+          document.getElementById('loader-panel').style.display = 'none';
+          document.getElementById('content-pubmed').style.display = 'block';
+          
+          currentExtractedCandidates = candidates;
+          renderCandidates(candidates);
+          
+          document.getElementById('preview-container').style.display = 'block';
+          showAlert(`PubMed (PMID: ${pmidVal}) から ${candidates.length} 件の結果候補を取得しました！「Results_raw」シートに保存しました。`, 'success');
+        })
+        .withFailureHandler((err) => {
+          document.getElementById('loader-panel').style.display = 'none';
+          document.getElementById('content-pubmed').style.display = 'block';
+          showAlert('PubMed取得エラー: ' + err.message, 'error');
+        })
+        .supplementFromPubMed(payload);
+    }
+
+    // ==========================================
+    // GitHubリポジトリ連携 (GitHub Sync V1.0 Client-side)
+    // ==========================================
+
+    // 読み込み時にGitHub設定を復元ロードする
+    document.addEventListener('DOMContentLoaded', () => {
+      loadGitHubSettings();
+      setTimeout(checkActiveRowOrInputNct, 800); // シートデータ読込を待つための微小ウェイト
+    });
+
+    function loadGitHubSettings() {
+      google.script.run
+        .withSuccessHandler((settings) => {
+          if (settings.hasToken) {
+            document.getElementById('gh-token').value = settings.maskedToken;
+            document.getElementById('github-conn-status').innerText = '設定済み';
+            document.getElementById('github-conn-status').style.backgroundColor = '#ccfbf1';
+            document.getElementById('github-conn-status').style.color = '#0f766e';
+          } else {
+            document.getElementById('gh-token').value = '';
+            document.getElementById('github-conn-status').innerText = '未接続';
+            document.getElementById('github-conn-status').style.backgroundColor = '#f1f5f9';
+            document.getElementById('github-conn-status').style.color = '#475569';
+          }
+          document.getElementById('gh-repo').value = settings.repo || 'awakuma1113/clinicaltrials';
+          document.getElementById('gh-branch').value = settings.branch || 'main';
+        })
+        .withFailureHandler((err) => {
+          console.error('GitHub設定の読み込みに失敗しました:', err);
+        })
+        .getGitHubSettings();
+    }
+
+    function togglePatVisibility() {
+      const tokenInput = document.getElementById('gh-token');
+      const toggleSpan = document.getElementById('gh-token-toggle');
+      if (tokenInput.type === 'password') {
+        tokenInput.type = 'text';
+        toggleSpan.innerText = '🔒';
+      } else {
+        tokenInput.type = 'password';
+        toggleSpan.innerText = '👁️';
+      }
+    }
+
+    function saveGitHubSettings() {
+      const token = document.getElementById('gh-token').value.trim();
+      const repo = document.getElementById('gh-repo').value.trim();
+      const branch = document.getElementById('gh-branch').value.trim();
+
+      if (!repo) {
+        showAlert('リポジトリ名は必須です。', 'error');
+        return;
+      }
+      if (!branch) {
+        showAlert('ブランチ名は必須です。', 'error');
+        return;
+      }
+
+      const saveBtn = document.getElementById('btn-gh-save');
+      saveBtn.disabled = true;
+      saveBtn.innerText = '保存中...';
+
+      google.script.run
+        .withSuccessHandler((res) => {
+          saveBtn.disabled = false;
+          saveBtn.innerText = '設定を保存';
+          if (res.success) {
+            showAlert(res.message, 'success');
+            loadGitHubSettings(); // マスク表示に再更新
+          } else {
+            showAlert(res.message, 'error');
+          }
+        })
+        .withFailureHandler((err) => {
+          saveBtn.disabled = false;
+          saveBtn.innerText = '設定を保存';
+          showAlert('設定保存エラー: ' + err.message, 'error');
+        })
+        .saveGitHubSettings(token, repo, branch);
+    }
+
+    function testGitHubSync() {
+      const token = document.getElementById('gh-token').value.trim();
+      const repo = document.getElementById('gh-repo').value.trim();
+      const branch = document.getElementById('gh-branch').value.trim();
+
+      const testBtn = document.getElementById('btn-gh-test');
+      testBtn.disabled = true;
+      testBtn.innerText = '接続中...';
+
+      google.script.run
+        .withSuccessHandler((res) => {
+          testBtn.disabled = false;
+          testBtn.innerText = '接続テスト';
+          if (res.success) {
+            showAlert(res.message, 'success');
+            document.getElementById('github-conn-status').innerText = '接続完了';
+            document.getElementById('github-conn-status').style.backgroundColor = '#d1fae5';
+            document.getElementById('github-conn-status').style.color = '#065f46';
+          } else {
+            showAlert(res.message, 'error');
+            document.getElementById('github-conn-status').innerText = 'エラー';
+            document.getElementById('github-conn-status').style.backgroundColor = '#fee2e2';
+            document.getElementById('github-conn-status').style.color = '#991b1b';
+          }
+        })
+        .withFailureHandler((err) => {
+          testBtn.disabled = false;
+          testBtn.innerText = '接続テスト';
+          showAlert('接続テストエラー: ' + err.message, 'error');
+        })
+        .testGitHubConnection(token, repo, branch);
+    }
+
+    function syncDataToGitHub() {
+      const token = document.getElementById('gh-token').value.trim();
+      const repo = document.getElementById('gh-repo').value.trim();
+      const branch = document.getElementById('gh-branch').value.trim();
+
+      const syncBtn = document.getElementById('btn-github-sync');
+      const logPanel = document.getElementById('github-log-panel');
+      
+      syncBtn.disabled = true;
+      const origHtml = syncBtn.innerHTML;
+      syncBtn.innerHTML = `
+        <svg class="spinner" style="width: 14px; height: 14px; border-width: 2px; border-top-color: #fff; display: inline-block; margin-right: 6px; box-shadow: none; animation: spin 0.8s linear infinite;"></svg>
+        データを同期中...
+      `;
+      
+      logPanel.style.display = 'block';
+      logPanel.innerHTML = `
+        <div style="font-weight: 600; color: var(--primary); margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+          <svg class="spinner" style="width: 11px; height: 11px; border-width: 1.5px; border-top-color: var(--primary); box-shadow: none; animation: spin 0.8s linear infinite;"></svg>
+          同期中: リポジトリ接続を検証しています...
+        </div>
+      `;
+      logPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+      google.script.run
+        .withSuccessHandler((res) => {
+          syncBtn.disabled = false;
+          syncBtn.innerHTML = origHtml;
+
+          if (res.success) {
+            showAlert(res.message, 'success');
+            
+            // Build logs
+            let logsHtml = `
+              <div style="font-weight: 600; color: var(--success); margin-bottom: 6px; display: flex; align-items: center; gap: 4px;">
+                ✨ 同期成功: リポジトリが最新になりました！
+              </div>
+              <ul style="list-style: none; padding-left: 0; display: flex; flex-direction: column; gap: 3px; margin-bottom: 10px;">
+                ${res.details.map(log => `<li style="font-size: 11px;">${log}</li>`).join('')}
+              </ul>
+              <a href="${res.htmlUrl}" target="_blank" class="btn btn-secondary" style="font-size: 11px; padding: 6px 12px; width: auto; display: inline-flex; background: linear-gradient(135deg, var(--secondary) 0%, #14b8a6 100%);">
+                GitHubでコミットを確認 ↗️
+              </a>
+            `;
+            logPanel.innerHTML = logsHtml;
+            loadGitHubSettings(); // 接続成功ステータス更新
+          } else {
+            showAlert(res.message, 'error');
+            let logsHtml = `
+              <div style="font-weight: 600; color: var(--error); margin-bottom: 6px;">
+                ⚠️ 同期失敗: 以下のコミット中にエラーが発生しました
+              </div>
+              <ul style="list-style: none; padding-left: 0; display: flex; flex-direction: column; gap: 3px; color: var(--text-muted);">
+                ${res.details ? res.details.map(log => `<li style="font-size: 11px;">${log}</li>`).join('') : `<li>${res.message}</li>`}
+              </ul>
+            `;
+            logPanel.innerHTML = logsHtml;
+          }
+        })
+        .withFailureHandler((err) => {
+          syncBtn.disabled = false;
+          syncBtn.innerHTML = origHtml;
+          showAlert('同期処理中に障害が発生しました: ' + err.message, 'error');
+          logPanel.innerHTML = `
+            <div style="font-weight: 600; color: var(--error);">
+              ❌ エラーが発生しました: ${err.message}
+            </div>
+          `;
+        })
+        .pushCsvFilesToGitHub(token, repo, branch, '');
+    }
+
+    // State Management for Current Extraction Results
+    let currentExtractedData = null;
+    let currentExtractedCandidates = [];
+
+    // Toggle accordion sections
+    function toggleSection(sectionId) {
+      const header = document.querySelector(`[onclick="toggleSection('${sectionId}')"]`);
+      const content = document.getElementById(sectionId);
+      
+      const isActive = content.classList.contains('active');
+      
+      if (isActive) {
+        content.classList.remove('active');
+        header.classList.remove('active');
+      } else {
+        content.classList.add('active');
+        header.classList.add('active');
+      }
+    }
+
+    // Set quick value tag
+    function setField(fieldId, value) {
+      document.getElementById(fieldId).value = value;
+    }
+
+    // Show Custom Alerts
+    function showAlert(message, type = 'success') {
+      const alertPanel = document.getElementById('alert-panel');
+      
+      // Inline SVGs for status icons
+      const successIcon = `<svg class="alert-icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>`;
+      const errorIcon = `<svg class="alert-icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>`;
+      
+      alertPanel.className = `alert alert-${type}`;
+      alertPanel.innerHTML = `
+        ${type === 'success' ? successIcon : errorIcon}
+        <div>${message}</div>
+      `;
+      alertPanel.style.display = 'flex';
+      
+      // Auto scroll to alert
+      alertPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function hideAlert() {
+      document.getElementById('alert-panel').style.display = 'none';
+    }
+
+    // Trigger URL Parsing Backend
+    function startAnalysis() {
+      const urlInput = document.getElementById('article-url').value.trim();
+      
+      if (!urlInput) {
+        showAlert('URLを入力してください。', 'error');
+        return;
+      }
+
+      hideAlert();
+      document.getElementById('search-card').style.display = 'none';
+      document.getElementById('loader-panel').style.display = 'flex';
+      document.getElementById('preview-container').style.display = 'none';
+
+      // Call Google Apps Script Code.gs backend
+      google.script.run
+        .withSuccessHandler(onAnalysisSuccess)
+        .withFailureHandler(onAnalysisFailure)
+        .fetchAndExtract(urlInput);
+    }
+
+    // Callback on backend analysis success
+    function onAnalysisSuccess(data) {
+      document.getElementById('loader-panel').style.display = 'none';
+      document.getElementById('search-card').style.display = 'block';
+      
+      if (!data) {
+        showAlert('データの抽出に失敗しました。', 'error');
+        return;
+      }
+
+      currentExtractedData = data;
+      currentExtractedCandidates = [];
+      document.getElementById('results-candidates-container').style.display = 'none';
+
+      // Initialize supplement buttons based on metadata presence (V3.1)
+      const pmid = data.pubmed_id || '';
+      const nct = data.nct_id || '';
+      
+      const btnPubmed = document.getElementById('btn-supplement-pubmed');
+      const btnCt = document.getElementById('btn-supplement-ct');
+      const labelPmid = document.getElementById('label-pmid');
+      const labelNct = document.getElementById('label-nct');
+      
+      labelPmid.innerText = pmid || 'なし';
+      labelNct.innerText = nct || 'なし';
+      
+      if (pmid) {
+        btnPubmed.disabled = false;
+        btnPubmed.style.opacity = '1';
+      } else {
+        btnPubmed.disabled = true;
+        btnPubmed.style.opacity = '0.5';
+      }
+      
+      if (nct) {
+        btnCt.disabled = false;
+        btnCt.style.opacity = '1';
+      } else {
+        btnCt.disabled = true;
+        btnCt.style.opacity = '0.5';
+      }
+
+      // Populate preview form fields
+      document.getElementById('field-title').value = data.article_title || '';
+      document.getElementById('field-url').value = data.article_url || '';
+      document.getElementById('field-pub-date').value = data.publication_date || data.publish_date || '';
+      document.getElementById('field-cancer-type').value = data.cancer_type || '';
+      document.getElementById('field-setting').value = data.treatment_setting || '';
+      document.getElementById('field-trial-name').value = data.trial_name || '';
+      document.getElementById('field-phase').value = data.phase || '';
+      document.getElementById('field-nct').value = data.nct_id || '';
+      document.getElementById('field-country').value = data.country || '';
+      document.getElementById('field-endpoint').value = data.endpoint || '';
+      document.getElementById('field-endpoint-from-title').value = data.endpoint_from_title || '';
+      document.getElementById('field-publication').value = data.publication || '';
+      document.getElementById('field-orig-url').value = data.original_article_url || '';
+      document.getElementById('field-pubmed-id').value = data.pubmed_id || '';
+      document.getElementById('field-notes').value = data.notes || '';
+      document.getElementById('field-summary').value = data.summary || '';
+
+      // Display and scroll to preview
+      const previewContainer = document.getElementById('preview-container');
+      previewContainer.style.display = 'block';
+      previewContainer.scrollIntoView({ behavior: 'smooth' });
+
+      // Automatically open the basic and trial sections
+      document.getElementById('sec-basic').classList.add('active');
+      document.querySelector(`[onclick="toggleSection('sec-basic')"]`).classList.add('active');
+      
+      showAlert('記事の解析が完了しました！プレビューを確認・修正してください。', 'success');
+    }
+
+    // Callback on backend analysis failure
+    function onAnalysisFailure(error) {
+      document.getElementById('loader-panel').style.display = 'none';
+      document.getElementById('search-card').style.display = 'block';
+      showAlert('エラー: ' + error.message, 'error');
+    }
+
+    // Set focus and accordion open states for manual entry
+    function focusManualEntry() {
+      // Open necessary accordions
+      const basicContent = document.getElementById('sec-basic');
+      const basicHeader = document.querySelector('[onclick="toggleSection(\'sec-basic\')"]');
+      if (basicContent && !basicContent.classList.contains('active')) {
+        basicContent.classList.add('active');
+        basicHeader.classList.add('active');
+      }
+      
+      const trialContent = document.getElementById('sec-trial');
+      const trialHeader = document.querySelector('[onclick="toggleSection(\'sec-trial\')"]');
+      if (trialContent && !trialContent.classList.contains('active')) {
+        trialContent.classList.add('active');
+        trialHeader.classList.add('active');
+      }
+
+      // Smooth scroll to extraction form
+      const formElement = document.getElementById('extraction-form');
+      if (formElement) {
+        formElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      
+      // Focus on the endpoint_from_title or trial_name input to guide entry
+      const targetInput = document.getElementById('field-endpoint-from-title') || document.getElementById('field-trial-name');
+      if (targetInput) {
+        setTimeout(() => targetInput.focus(), 500); // delay slightly for smooth scroll
+      }
+      
+      showAlert('基本情報と臨床試験詳細のパネルを開きました。結果数値や追加メタデータを手入力で補正してください。', 'success');
+    }
+
+    // Trigger row insertion
+    function saveToSheet() {
+      if (!currentExtractedData) {
+        showAlert('保存するデータがありません。先に解析を実行してください。', 'error');
+        return;
+      }
+
+      // Collect edited values from preview form
+      const dataToSave = {
+        article_url: document.getElementById('field-url').value.trim(),
+        article_title: document.getElementById('field-title').value.trim(),
+        publication_date: document.getElementById('field-pub-date').value.trim(),
+        cancer_type: document.getElementById('field-cancer-type').value.trim(),
+        treatment_setting: document.getElementById('field-setting').value.trim(),
+        endpoint: document.getElementById('field-endpoint').value.trim(),
+        endpoint_from_title: document.getElementById('field-endpoint-from-title').value.trim(),
+        trial_name: document.getElementById('field-trial-name').value.trim(),
+        phase: document.getElementById('field-phase').value.trim(),
+        nct_id: document.getElementById('field-nct').value.trim(),
+        country: document.getElementById('field-country').value.trim(),
+        publication: document.getElementById('field-publication').value.trim(),
+        original_article_url: document.getElementById('field-orig-url').value.trim(),
+        pubmed_id: document.getElementById('field-pubmed-id').value.trim(),
+        summary: document.getElementById('field-summary').value.trim(),
+        notes: document.getElementById('field-notes').value.trim()
+      };
+
+      if (!dataToSave.article_url) {
+        showAlert('記事URLは必須項目です。', 'error');
+        return;
+      }
+
+      // Disable button during saving
+      const saveBtn = document.getElementById('btn-save');
+      saveBtn.disabled = true;
+      saveBtn.innerHTML = '登録しています...';
+
+      // Call Google Apps Script Code.gs backend
+      google.script.run
+        .withSuccessHandler(onSaveSuccess)
+        .withFailureHandler(onSaveFailure)
+        .insertRowToSheet(dataToSave);
+    }
+
+    // Callback on backend save success
+    function onSaveSuccess(result) {
+      const saveBtn = document.getElementById('btn-save');
+      saveBtn.disabled = false;
+      saveBtn.innerHTML = `
+        <svg fill="currentColor" viewBox="0 0 24 24" width="16" height="16">
+          <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+        </svg>
+        Google Sheetsに登録
+      `;
+
+      if (result.success) {
+        showAlert(result.message, 'success');
+        
+        // Success micro-interaction: Reset form and hide preview with a minor delay
+        setTimeout(() => {
+          document.getElementById('preview-container').style.display = 'none';
+          document.getElementById('article-url').value = '';
+          currentExtractedData = null;
+        }, 3000);
+      } else {
+        showAlert(result.message, 'error');
+      }
+    }
+
+    // Callback on backend save failure
+    function onSaveFailure(error) {
+      const saveBtn = document.getElementById('btn-save');
+      saveBtn.disabled = false;
+      saveBtn.innerHTML = `
+        <svg fill="currentColor" viewBox="0 0 24 24" width="16" height="16">
+          <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+        </svg>
+        Google Sheetsに登録
+      `;
+      showAlert('エラー: ' + error.message, 'error');
+    }
+
+    // ==========================================
+    // Results Extraction V3.1 Client-side Logic
+    // ==========================================
+
+    // Supplement data from PubMed or ClinicalTrials.gov
+    function startSupplement(type) {
+      if (!currentExtractedData) {
+        showAlert('先に記事の解析を実行してください。', 'error');
+        return;
+      }
+      
+      // Sync latest values from form to currentExtractedData to allow user-corrected identifiers
+      currentExtractedData.pubmed_id = document.getElementById('field-pubmed-id').value.trim();
+      currentExtractedData.nct_id = document.getElementById('field-nct').value.trim();
+      currentExtractedData.trial_name = document.getElementById('field-trial-name').value.trim();
+      currentExtractedData.endpoint_from_title = document.getElementById('field-endpoint-from-title').value.trim();
+      currentExtractedData.endpoint = document.getElementById('field-endpoint').value.trim();
+      
+      hideAlert();
+      const pmid = currentExtractedData.pubmed_id;
+      const nctId = currentExtractedData.nct_id;
+      
+      if (type === 'pubmed' && !pmid) {
+        showAlert('PubMed IDが見つからないため、補完を実行できません。', 'error');
+        return;
+      }
+      if (type === 'clinicaltrials' && !nctId) {
+        showAlert('NCT IDが見つからないため、補完を実行できません。', 'error');
+        return;
+      }
+      
+      const btnId = type === 'pubmed' ? 'btn-supplement-pubmed' : 'btn-supplement-ct';
+      const btn = document.getElementById(btnId);
+      btn.disabled = true;
+      const originalHtml = btn.innerHTML;
+      btn.innerHTML = `
+        <svg class="spinner" style="width: 14px; height: 14px; border-width: 2px; border-top-color: #fff; display: inline-block; margin-right: 6px; box-shadow: none; animation: spin 0.8s linear infinite;"></svg>
+        補完中...
+      `;
+      
+      document.getElementById('results-candidates-container').style.display = 'none';
+      
+      const successHandler = (res) => {
+        btn.disabled = false;
+        btn.innerHTML = originalHtml;
+        
+        // Handle both direct array (PubMed) and object with candidates (ClinicalTrials API)
+        const candidates = (res && res.candidates) ? res.candidates : (Array.isArray(res) ? res : []);
+        
+        currentExtractedCandidates = candidates;
+        renderCandidates(candidates);
+        showAlert(`${type === 'pubmed' ? 'PubMed' : 'ClinicalTrials.gov'} から ${candidates.length} 件の結果候補を抽出・補完しました！「Results_raw」シートに保存しました。`, 'success');
+      };
+      
+      const failureHandler = (error) => {
+        btn.disabled = false;
+        btn.innerHTML = originalHtml;
+        showAlert('補完エラー: ' + error.message, 'error');
+      };
+      
+      if (type === 'pubmed') {
+        google.script.run
+          .withSuccessHandler(successHandler)
+          .withFailureHandler(failureHandler)
+          .supplementFromPubMed(currentExtractedData);
+      } else {
+        google.script.run
+          .withSuccessHandler(successHandler)
+          .withFailureHandler(failureHandler)
+          .supplementFromClinicalTrialsApi(nctId);
+      }
+    }
+
+    // Toggle candidate card accordion
+    function toggleCandidateCard(index) {
+      const formBody = document.getElementById(`form-body-${index}`);
+      const chevron = document.getElementById(`chevron-${index}`);
+      const isActive = formBody.style.display !== 'none';
+      
+      if (isActive) {
+        formBody.style.display = 'none';
+        chevron.style.transform = 'rotate(0deg)';
+      } else {
+        formBody.style.display = 'flex';
+        formBody.style.flexDirection = 'column';
+        chevron.style.transform = 'rotate(180deg)';
+      }
+    }
+
+    // Toggle inner safety details
+    function toggleSafetyDetails(index) {
+      const fields = document.getElementById(`safety-fields-${index}`);
+      const chevron = document.getElementById(`safety-chevron-${index}`);
+      const isActive = fields.style.display !== 'none';
+      
+      if (isActive) {
+        fields.style.display = 'none';
+        chevron.style.transform = 'rotate(0deg)';
+      } else {
+        fields.style.display = 'flex';
+        chevron.style.transform = 'rotate(180deg)';
+      }
+    }
+
+    // Render extracted candidates in the container
+    function renderCandidates(candidates) {
+      const container = document.getElementById('results-candidates-container');
+      container.innerHTML = `
+        <div class="preview-header-meta">Extraction Candidates</div>
+        <h3 style="font-size: 15px; color: var(--text-main); margin-bottom: 12px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">抽出された結果候補 (${candidates.length}件)</h3>
+      `;
+      
+      if (candidates.length === 0) {
+        container.innerHTML += `
+          <div class="card" style="padding: 16px; text-align: center; color: var(--text-muted); font-size: 12.5px;">
+            一次ソースから結果候補文が検出されませんでした。
+          </div>
+        `;
+        container.style.display = 'block';
+        container.scrollIntoView({ behavior: 'smooth' });
+        return;
+      }
+      
+      candidates.forEach((c, index) => {
+        const card = document.createElement('div');
+        card.className = 'candidate-card';
+        card.id = `candidate-card-${index}`;
+        
+        const confClass = `confidence-${c.confidence}`;
+        
+        card.innerHTML = `
+          <div class="candidate-card-header" onclick="toggleCandidateCard(${index})">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="candidate-endpoint-badge">${c.detected_endpoint}</span>
+              <span class="confidence-badge ${confClass}">${c.confidence}</span>
+            </div>
+            <svg class="chevron-icon" id="chevron-${index}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="14" height="14">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </div>
+          
+          <div class="source-text-block">
+            "${c.source_text}"
+          </div>
+          
+          <div class="candidate-form" id="form-body-${index}" style="display: none;">
+            <!-- Endpoint Type & Comparison -->
+            <div class="form-grid-2">
+              <div>
+                <label class="compact-label">評価項目分類</label>
+                <select class="compact-control" id="cand-endpoint_type-${index}">
+                  <option value="主要評価項目">主要評価項目</option>
+                  <option value="副次評価項目" ${c.detected_endpoint !== 'PFS' && c.detected_endpoint !== 'OS' ? 'selected' : ''}>副次評価項目</option>
+                  <option value="探索的評価項目">探索的評価項目</option>
+                  <option value="サブグループ解析">サブグループ解析</option>
+                </select>
+              </div>
+              <div>
+                <label class="compact-label">比較内容 (Comparison)</label>
+                <input type="text" class="compact-control" id="cand-comparison-${index}" value="${c.comparison || ''}" placeholder="例: A群 vs B群">
+              </div>
+            </div>
+            
+            <!-- Arms -->
+            <div class="form-grid-2">
+              <div>
+                <label class="compact-label">Arm A (試験群)</label>
+                <input type="text" class="compact-control" id="cand-arm_a-${index}" value="${c.arm_a || ''}" placeholder="例: ペンブロ群">
+              </div>
+              <div>
+                <label class="compact-label">Arm B (対照群)</label>
+                <input type="text" class="compact-control" id="cand-arm_b-${index}" value="${c.arm_b || ''}" placeholder="例: 化学療法群">
+              </div>
+            </div>
+
+            <!-- Medians & Units -->
+            <div class="form-grid-3">
+              <div>
+                <label class="compact-label">中央値 A</label>
+                <input type="text" class="compact-control" id="cand-median_a-${index}" value="${c.median_a || ''}" placeholder="値">
+              </div>
+              <div>
+                <label class="compact-label">中央値 B</label>
+                <input type="text" class="compact-control" id="cand-median_b-${index}" value="${c.median_b || ''}" placeholder="値">
+              </div>
+              <div>
+                <label class="compact-label">単位</label>
+                <input type="text" class="compact-control" id="cand-unit-${index}" value="${c.unit || ''}" placeholder="か月 / %">
+              </div>
+            </div>
+
+            <!-- Statistics: HR, CI Lower, CI Upper -->
+            <div class="form-grid-3">
+              <div>
+                <label class="compact-label">ハザード比 (HR)</label>
+                <input type="text" class="compact-control" id="cand-hr-${index}" value="${c.hr || ''}" placeholder="HR">
+              </div>
+              <div>
+                <label class="compact-label">95% CI 下限</label>
+                <input type="text" class="compact-control" id="cand-ci_lower-${index}" value="${c.ci_lower || ''}" placeholder="下限">
+              </div>
+              <div>
+                <label class="compact-label">95% CI 上限</label>
+                <input type="text" class="compact-control" id="cand-ci_upper-${index}" value="${c.ci_upper || ''}" placeholder="上限">
+              </div>
+            </div>
+
+            <!-- p-value & Target Population -->
+            <div class="form-grid-2">
+              <div>
+                <label class="compact-label">p値 (p-value)</label>
+                <input type="text" class="compact-control" id="cand-p_value-${index}" value="${c.p_value || ''}" placeholder="p値">
+              </div>
+              <div>
+                <label class="compact-label">対象患者 (Population)</label>
+                <input type="text" class="compact-control" id="cand-population-${index}" value="${c.population || ''}" placeholder="例: 未治療のNSCLC">
+              </div>
+            </div>
+
+            <!-- Efficacy: ORR & DCR -->
+            <div class="form-grid-2">
+              <div>
+                <label class="compact-label">ORR A (%) / B (%)</label>
+                <div style="display: flex; gap: 4px;">
+                  <input type="text" class="compact-control" id="cand-orr_a-${index}" value="${c.orr_a || ''}" placeholder="A">
+                  <input type="text" class="compact-control" id="cand-orr_b-${index}" value="${c.orr_b || ''}" placeholder="B">
+                </div>
+              </div>
+              <div>
+                <label class="compact-label">DCR A (%) / B (%)</label>
+                <div style="display: flex; gap: 4px;">
+                  <input type="text" class="compact-control" id="cand-dcr_a-${index}" value="${c.dcr_a || ''}" placeholder="A">
+                  <input type="text" class="compact-control" id="cand-dcr_b-${index}" value="${c.dcr_b || ''}" placeholder="B">
+                </div>
+              </div>
+            </div>
+
+            <!-- Safety Details -->
+            <div style="border-top: 1px dashed rgba(203, 213, 225, 0.6); margin-top: 4px; padding-top: 6px;">
+              <div style="cursor: pointer; display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;" onclick="toggleSafetyDetails(${index})">
+                <span style="font-size: 11px; font-weight: 600; color: var(--secondary);">有害事象・安全性データ</span>
+                <svg id="safety-chevron-${index}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="10" height="10" style="transition: transform 0.2s;">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                </svg>
+              </div>
+              <div id="safety-fields-${index}" style="display: none; flex-direction: column; gap: 8px;">
+                <div class="form-grid-3">
+                  <div>
+                    <label class="compact-label">Grade 3+ AE A/B</label>
+                    <div style="display: flex; gap: 2px;">
+                      <input type="text" class="compact-control" id="cand-grade3_ae_a-${index}" value="${c.grade3_ae_a || ''}" placeholder="A">
+                      <input type="text" class="compact-control" id="cand-grade3_ae_b-${index}" value="${c.grade3_ae_b || ''}" placeholder="B">
+                    </div>
+                  </div>
+                  <div>
+                    <label class="compact-label">投与中止率 A/B</label>
+                    <div style="display: flex; gap: 2px;">
+                      <input type="text" class="compact-control" id="cand-discontinuation_a-${index}" value="${c.discontinuation_a || ''}" placeholder="A">
+                      <input type="text" class="compact-control" id="cand-discontinuation_b-${index}" value="${c.discontinuation_b || ''}" placeholder="B">
+                    </div>
+                  </div>
+                  <div>
+                    <label class="compact-label">関連死 A/B</label>
+                    <div style="display: flex; gap: 2px;">
+                      <input type="text" class="compact-control" id="cand-treatment_related_death_a-${index}" value="${c.treatment_related_death_a || ''}" placeholder="A">
+                      <input type="text" class="compact-control" id="cand-treatment_related_death_b-${index}" value="${c.treatment_related_death_b || ''}" placeholder="B">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Notes -->
+            <div>
+              <label class="compact-label">結果に関する備考</label>
+              <input type="text" class="compact-control" id="cand-notes-${index}" value="${c.notes || ''}" placeholder="例: ハザード比は統計的に有意">
+            </div>
+
+            <!-- Action Buttons -->
+            <div style="display: flex; gap: 8px; margin-top: 10px;">
+              <button class="btn btn-secondary" id="btn-save-raw-${index}" onclick="saveRawCandidate(${index})" style="padding: 9px 12px; font-size: 12px; flex: 1; background: linear-gradient(135deg, #64748b 0%, #475569 100%); box-shadow: none;">
+                <svg fill="currentColor" viewBox="0 0 20 20" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+                  <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                </svg>
+                Results_rawに保存
+              </button>
+              <button class="btn btn-primary" id="btn-verify-cand-${index}" onclick="verifyAndSaveCandidate(${index})" style="padding: 9px 12px; font-size: 12px; flex: 1;">
+                <svg fill="currentColor" viewBox="0 0 20 20" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+                Resultsに追加
+              </button>
+            </div>
+          </div>
+        `;
+        
+        container.appendChild(card);
+      });
+      
+      container.style.display = 'block';
+      container.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Save edited candidate directly to Results_raw as Unverified
+    function saveRawCandidate(index) {
+      const cand = currentExtractedCandidates[index];
+      if (!cand) return;
+      
+      const btn = document.getElementById(`btn-save-raw-${index}`);
+      btn.disabled = true;
+      btn.innerHTML = '保存中...';
+      
+      const rawData = {
+        article_url: cand.article_url,
+        trial_name: cand.trial_name,
+        nct_id: cand.nct_id,
+        pmid: cand.pmid,
+        endpoint: cand.detected_endpoint,
+        detected_result_text: cand.detected_result_text,
+        source_text: cand.source_text,
+        source_url: cand.source_url || '',
+        confidence: cand.confidence,
+        hr: document.getElementById(`cand-hr-${index}`).value.trim(),
+        ci_lower: document.getElementById(`cand-ci_lower-${index}`).value.trim(),
+        ci_upper: document.getElementById(`cand-ci_upper-${index}`).value.trim(),
+        p_value: document.getElementById(`cand-p_value-${index}`).value.trim(),
+        median_a: document.getElementById(`cand-median_a-${index}`).value.trim(),
+        median_b: document.getElementById(`cand-median_b-${index}`).value.trim(),
+        value_a: document.getElementById(`cand-orr_a-${index}`).value.trim() || document.getElementById(`cand-grade3_ae_a-${index}`).value.trim() || '',
+        value_b: document.getElementById(`cand-orr_b-${index}`).value.trim() || document.getElementById(`cand-grade3_ae_b-${index}`).value.trim() || '',
+        notes: document.getElementById(`cand-notes-${index}`).value.trim()
+      };
+      
+      google.script.run
+        .withSuccessHandler((res) => {
+          btn.disabled = false;
+          btn.innerHTML = `
+            <svg fill="currentColor" viewBox="0 0 20 20" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+              <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/>
+            </svg>
+            Results_rawに保存
+          `;
+          if (res.success) {
+            showAlert(res.message, 'success');
+            const card = document.getElementById(`candidate-card-${index}`);
+            card.style.border = '1px solid #64748b';
+            card.style.background = 'rgba(241, 245, 249, 0.95)';
+          } else {
+            showAlert(res.message, 'error');
+          }
+        })
+        .withFailureHandler((err) => {
+          btn.disabled = false;
+          btn.innerHTML = `
+            <svg fill="currentColor" viewBox="0 0 20 20" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+              <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/>
+            </svg>
+            Results_rawに保存
+          `;
+          showAlert('保存エラー: ' + err.message, 'error');
+        })
+        .saveSingleRawCandidate(rawData);
+    }
+
+    // Verify and save structured clinical trial result candidate
+    function verifyAndSaveCandidate(index) {
+      const cand = currentExtractedCandidates[index];
+      if (!cand) return;
+      
+      const btn = document.getElementById(`btn-verify-cand-${index}`);
+      btn.disabled = true;
+      btn.innerHTML = '登録中...';
+      
+      // Collect edited values from forms
+      const verifiedData = {
+        article_url: cand.article_url,
+        trial_name: cand.trial_name,
+        nct_id: cand.nct_id,
+        pmid: cand.pmid,
+        cancer_type: currentExtractedData ? (currentExtractedData.cancer_type || '') : '',
+        treatment_setting: currentExtractedData ? (currentExtractedData.treatment_setting || '') : '',
+        population: document.getElementById(`cand-population-${index}`).value.trim(),
+        comparison: document.getElementById(`cand-comparison-${index}`).value.trim(),
+        endpoint: cand.detected_endpoint,
+        endpoint_type: document.getElementById(`cand-endpoint_type-${index}`).value,
+        arm_a: document.getElementById(`cand-arm_a-${index}`).value.trim(),
+        arm_b: document.getElementById(`cand-arm_b-${index}`).value.trim(),
+        value_a: document.getElementById(`cand-orr_a-${index}`).value.trim() || document.getElementById(`cand-grade3_ae_a-${index}`).value.trim() || '',
+        value_b: document.getElementById(`cand-orr_b-${index}`).value.trim() || document.getElementById(`cand-grade3_ae_b-${index}`).value.trim() || '',
+        median_a: document.getElementById(`cand-median_a-${index}`).value.trim(),
+        median_b: document.getElementById(`cand-median_b-${index}`).value.trim(),
+        unit: document.getElementById(`cand-unit-${index}`).value.trim(),
+        hr: document.getElementById(`cand-hr-${index}`).value.trim(),
+        ci_lower: document.getElementById(`cand-ci_lower-${index}`).value.trim(),
+        ci_upper: document.getElementById(`cand-ci_upper-${index}`).value.trim(),
+        p_value: document.getElementById(`cand-p_value-${index}`).value.trim(),
+        orr_a: document.getElementById(`cand-orr_a-${index}`).value.trim(),
+        orr_b: document.getElementById(`cand-orr_b-${index}`).value.trim(),
+        dcr_a: document.getElementById(`cand-dcr_a-${index}`).value.trim(),
+        dcr_b: document.getElementById(`cand-dcr_b-${index}`).value.trim(),
+        grade3_ae_a: document.getElementById(`cand-grade3_ae_a-${index}`).value.trim(),
+        grade3_ae_b: document.getElementById(`cand-grade3_ae_b-${index}`).value.trim(),
+        discontinuation_a: document.getElementById(`cand-discontinuation_a-${index}`).value.trim(),
+        discontinuation_b: document.getElementById(`cand-discontinuation_b-${index}`).value.trim(),
+        treatment_related_death_a: document.getElementById(`cand-treatment_related_death_a-${index}`).value.trim(),
+        treatment_related_death_b: document.getElementById(`cand-treatment_related_death_b-${index}`).value.trim(),
+        source_type: 'がん対策図鑑',
+        source_url: cand.source_url || cand.article_url || '',
+        source_text: cand.source_text,
+        confidence: cand.confidence,
+        notes: document.getElementById(`cand-notes-${index}`).value.trim()
+      };
+      
+      google.script.run
+        .withSuccessHandler((res) => {
+          btn.disabled = false;
+          btn.innerHTML = `
+            <svg fill="currentColor" viewBox="0 0 20 20" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+            </svg>
+            Resultsに追加
+          `;
+          if (res.success) {
+            showAlert(res.message, 'success');
+            const card = document.getElementById(`candidate-card-${index}`);
+            card.style.border = '2.5px solid var(--success)';
+            card.style.background = 'rgba(236, 253, 245, 0.95)';
+            document.getElementById(`form-body-${index}`).style.display = 'none';
+            document.getElementById(`chevron-${index}`).style.transform = 'rotate(0deg)';
+          } else {
+            showAlert(res.message, 'error');
+          }
+        })
+        .withFailureHandler((err) => {
+          btn.disabled = false;
+          btn.innerHTML = `
+            <svg fill="currentColor" viewBox="0 0 20 20" width="14" height="14" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+            </svg>
+            Resultsに追加
+          `;
+          showAlert('登録エラー: ' + err.message, 'error');
+        })
+        .insertVerifiedResult(verifiedData);
+    }
+  </script>
+</body>
+</html>
